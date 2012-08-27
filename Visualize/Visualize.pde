@@ -21,7 +21,7 @@ import themidibus.*;
 //Setup global variables -- mostly MIDI and Audio configurations
 MidiBus bus;
 Minim minim;
-AudioInput input;
+AudioPlayer input;
 FourierAnalyzer analyzer;
 FFT fft;
 
@@ -34,10 +34,12 @@ SpiralCircle spiralcircles;
 
 void setup() {
   //setup processing stuff
-  size(1920, 1080);
+  size(1440, 900);
   smooth();
   background(0);
   rectMode(CENTER);
+  
+  String song = new String("song.mp3");
 
   //create a new Minim instance
   minim = new Minim(this);  
@@ -46,7 +48,10 @@ void setup() {
   bus = new MidiBus(this, "nanoKONTROL2 [hw:2,0]", "nanoKONTROL2 [hw:2,0]");
 
   //setup FFT stuff
-  input = minim.getLineIn(Minim.STEREO, 512);
+  //input = minim.getLineIn(Minim.STEREO, 512);
+  input = minim.loadFile(song, 1024);
+  input.play();
+  
   fft = new FFT(input.bufferSize(), input.sampleRate());
   
   //set up the fourier analyzer with 64 channels
